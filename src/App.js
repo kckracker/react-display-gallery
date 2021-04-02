@@ -1,6 +1,12 @@
 // Imports for App dependencies
 import React, {Component} from 'react';
+import apiKey from './config';
+
+// Imports components
 import SearchBar from './SearchBar';
+import NavTerms from './NavTerms';
+import PhotoList from './PhotoList';
+import NotFound from './NotFound';
 
 
 class App extends Component {
@@ -9,12 +15,17 @@ class App extends Component {
         results: false
     }
 
-    performSearch = () => {}
+    performSearch = (query) => {
+        return(
+            <PhotoList query={query}/>
+        )
+    }
 
     render(){
         return(
         <div className="container">
-        <SearchBar />
+        <SearchBar search={this.performSearch}/>
+        <NavTerms />
         </div>
         )
     }
