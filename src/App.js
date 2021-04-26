@@ -1,32 +1,114 @@
 // Imports for App dependencies
 import React, {Component} from 'react';
 import apiKey from './config';
+import {
+    Switch,
+    Route
+    } from 'react-router-dom';
+import axios  from 'axios';
 
 // Imports components
-import SearchBar from './SearchBar';
-import NavTerms from './NavTerms';
-import PhotoList from './PhotoList';
-import NotFound from './NotFound';
+import Home from './components/Home';
+import Search from './components/Search';
+import SearchBar from './components/SearchBar';
+import NavTerms from './components/NavTerms';
+import NotFound from './components/NotFound';
+
+
+
 
 
 class App extends Component {
-
-    state = {
-        results: false
+    constructor(props){
+        super(props);
+        this.state = {
+            results: true,
+            searchText: "",
+            photos: []
+        }
+        this.setSearchText = this.setSearchText.bind(this);
+        this.performSearch = this.performSearch.bind(this);
     }
 
-    performSearch = (query) => {
-        return(
-            <PhotoList query={query}/>
-        )
+    
+    // Calling performSearch upon mount to ensure defaul photos load
+    componentDidMount(){
+        this.performSearch();
     }
+
+     /** Function to set state searchText from SearchBar or NavTerm components 
+     * {text} - accepts string of text from navigation or user input
+     * */ 
+    setSearchText = (text) => {
+        if(!text){
+            alert("Please enter a value for your search!")
+        } else {
+            this.setState({
+                searchText: text
+            })
+        }
+    }
+
+    /** Function to generate photos from search or navigation from Flickr API 
+     * {number} - accepts number to request limit of photos
+     * {text} - accepts string from state searchText
+     * */ 
+    performSearch = (number = 3, text = "fjord%2C+sunset%2C+skyline" ) => {
+        if(!text){
+            return
+        } else {
+            this.setState({
+                results:false
+            })
+            axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${text}&safe_search=1&content_type=1&per_page=${number}&format=json&nojsoncallback=1`)
+            .then(data => this.setState({
+                photos: data.data.photos.photo,
+                results: true 
+            })
+            )
+        }
+    }
+
 
     render(){
+
         return(
-        <div className="container">
-        <SearchBar search={this.performSearch}/>
-        <NavTerms />
-        </div>
+                <div className="container">
+                <SearchBar 
+                    search={this.performSearch } 
+                    term={this.setSearchText}
+                    text={this.state.searchText}
+                    />
+                <NavTerms 
+                    search={this.performSearch} 
+                    term={this.setSearchText}
+                    text={this.state.searchText} 
+                    />
+                <Switch> 
+                    <Route path={`/search/:term`} >
+                        <Search 
+                                term={this.setSearchText}
+                                text={this.state.searchText} 
+                                results={this.state.results}
+                                data={this.state.photos} 
+                                search={this.performSearch}
+                        /> 
+                    </Route>
+                    <Route exact path="/" >
+                        <Home 
+                            search={this.performSearch}
+                            results={this.state.results}
+                            data={this.state.photos}
+                            title="React Display Gallery"
+                        />
+                    </Route>                    
+                    <Route>
+                        <NotFound
+                            home={this.performSearch}
+                         />
+                    </Route>
+                 </Switch>
+                </div>
         )
     }
 
@@ -35,15 +117,3 @@ class App extends Component {
 
 export default App;
 
-/* 
-    1. Create React App - install depencdencies
-    2. Using the index.html file provided (in examples/), create your components
-        - App containing div .container, SearchBar, ternary operator displaying PhotoList if results = true : NotFound if results = false
-        - SearchBar containing form .search-form, input, search button .search-button (check svg and path tags as well), NavTerms
-        - NavTerms containing ul, li, a tags (or Switch enabled routes upon click)
-        - PhotoList containing div .photo-container, h2 "Results", Photos
-        - Photos containing ul, li, img (dynamically inserting using map on fetch array and using api info to inform src property)
-        - NotFound containing li .not-found, h3 "No Results Found", p "Your search did not return any results. Please try again."
-
-    * Use ref to create reference to input keyed by user upon submit || enter
-*/

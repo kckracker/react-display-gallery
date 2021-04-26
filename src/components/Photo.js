@@ -4,9 +4,8 @@ import React from 'react';
 
 const Photo = (props) => {
     return(
-        <ul>
-            <li><img src={props.url} alt=""/></li>
-        </ul>
+        <li><img src={props.url} alt="" key={props.id} /></li>
+        
     )
 }
 

@@ -7,7 +7,7 @@ body {
 h2 {
   font-size: 2em;
   margin: 52px 0 40px;
-  text-transform: capitalize;
+  
 }
 
 ul {
@@ -29,7 +29,7 @@ a {
   outline: none;
   background-color: #438bbd;
   border: none;
-  padding: 0px 15px;
+  padding: 10px  15px;
   border-radius: 0 0.35em 0.35em 0;
   cursor: pointer;
 }
