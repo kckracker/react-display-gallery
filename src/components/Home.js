@@ -1,8 +1,8 @@
 import React from 'react';
 import PhotoList from './PhotoList';
-import {useHistory} from 'react-router-dom';
 
 const Home = (props) => {
+    
 
     if(props.results && props.data.length === 3){
         return( 
