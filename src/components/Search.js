@@ -27,9 +27,9 @@ const Search = (props) => {
             <div>
             <PhotoList data={props.data} title={`Photos of ${props.text}`}  />
             <nav className="main-nav">
-                <Link exact to='/' onClick={() => props.search(3)} >Go Home</Link>
+                <Link exact to='/'>Go Home</Link>
             </nav>
-        </div>
+            </div>
         )
     } else {
         return(

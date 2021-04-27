@@ -12,9 +12,9 @@ const NavTerms = (props) => {
     return(
     <nav className="main-nav">
         <ul>
-            <li><NavLink to={`/search/fjords`} onClick={navigateSearch}>Fjords</NavLink></li>
-            <li><NavLink to={`/search/sunsets`} onClick={navigateSearch}>Sunsets</NavLink></li>
-            <li><NavLink to={`/search/skylines`} onClick={navigateSearch}>Skylines</NavLink></li>
+            <li><NavLink to={`/search/fjords`} onClick={navigateSearch}>fjords</NavLink></li>
+            <li><NavLink to={`/search/sunsets`} onClick={navigateSearch}>sunsets</NavLink></li>
+            <li><NavLink to={`/search/skylines`} onClick={navigateSearch}>skylines</NavLink></li>
         </ul>
     </nav>
     )

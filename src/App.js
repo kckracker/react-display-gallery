@@ -24,7 +24,8 @@ class App extends Component {
         this.state = {
             results: true,
             searchText: "",
-            photos: []
+            photos: [],
+            homePhotos: []
         }
         this.setSearchText = this.setSearchText.bind(this);
         this.performSearch = this.performSearch.bind(this);
@@ -34,6 +35,9 @@ class App extends Component {
     // Calling performSearch upon mount to ensure defaul photos load
     componentDidMount(){
         this.performSearch();
+        this.setState({
+            homePhotos: this.props.photos
+        })
     }
 
      /** Function to set state searchText from SearchBar or NavTerm components 
@@ -54,18 +58,26 @@ class App extends Component {
      * {text} - accepts string from state searchText
      * */ 
     performSearch = (number = 3, text = "fjord%2C+sunset%2C+skyline" ) => {
-        if(!text){
+        if(text === ""){
             return
         } else {
             this.setState({
                 results:false
             })
             axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${text}&safe_search=1&content_type=1&per_page=${number}&format=json&nojsoncallback=1`)
-            .then(data => this.setState({
-                photos: data.data.photos.photo,
-                results: true 
+            .then(data => {
+                if(number === 3){
+                    this.setState({
+                        homePhotos: data.data.photos.photo,
+                        results: true 
+                    })
+                } else {
+                    this.setState({
+                        photos: data.data.photos.photo,
+                        results: true 
+                    })
+                }
             })
-            )
         }
     }
 
@@ -98,7 +110,7 @@ class App extends Component {
                         <Home 
                             search={this.performSearch}
                             results={this.state.results}
-                            data={this.state.photos}
+                            data={this.state.homePhotos}
                             title="React Display Gallery"
                         />
                     </Route>                    
