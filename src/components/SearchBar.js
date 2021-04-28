@@ -11,7 +11,14 @@ const SearchBar = (props) => {
     // Creating useState hook references to reference local input state without a class component.
     const [searchText, setSearchText] = useState("");
     
-
+    /** Function call to send input data as a search to Flickr API
+     * {event} - accepts an event as a parameter
+     * Prevents default event if the searchText state date is empty and supplies an alert for the user to input a string to search
+     * 
+     * Else if the hook data does not equal the state searchText supplied by props, call setSearchText passing in the 24 photo limit and searchText hook data as search parameter
+     * 
+     * A call to performSearch via the props search is made passing in the searchText hook data and the input ref is cleared to allow for another search to be made.
+     */
     const sendSearch = (e) => {
         if(!searchText){
             e.preventDefault();
@@ -24,7 +31,7 @@ const SearchBar = (props) => {
         inputRef.current.value = "";
     }
 
-
+    // Return form with an input containing the ref attribute, onKeyUp listener for setting the searchText hook data, and a placeholder. Wrapping the button tag in a Link JSX tag to have the './search' path routed upon submission of form. The Link tag also containes the onClick listener to run sendSearch, passing in the submit event.
     return(
         <form className="search-form">
             <input type="search" name="search" placeholder="Search" required ref={(inputRef)} onKeyUp={() => setSearchText(inputRef.current.value) } />

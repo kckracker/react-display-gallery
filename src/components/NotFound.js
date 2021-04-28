@@ -14,7 +14,7 @@ const NotFound = (props) => {
                 <p>The page you are looking for is on the run. Please try again.</p>
             </li>
             <nav className="main-nav">
-                <Link exact to='/'>Go Home</Link>
+                <Link to='/'>Go Home</Link>
             </nav>
         </ul>
         

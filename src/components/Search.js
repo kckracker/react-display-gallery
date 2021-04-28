@@ -20,7 +20,7 @@ const Search = (props) => {
         <div>
             <PhotoList data={props.data} title={`Photos of ${props.text}`}  />
             <nav className="main-nav">
-                <Link exact to='/'>Go Home</Link>
+                <Link to='/'>Go Home</Link>
             </nav>
         </div>
         )
@@ -31,7 +31,7 @@ const Search = (props) => {
             <div>
             <PhotoList data={props.data} title={`Photos of ${props.text}`}  />
             <nav className="main-nav">
-                <Link exact to='/'>Go Home</Link>
+                <Link to='/'>Go Home</Link>
             </nav>
             </div>
         )
