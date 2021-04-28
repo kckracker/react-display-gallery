@@ -7,16 +7,20 @@ import {Link, useParams } from 'react-router-dom';
 const Search = (props) => {
 
 
-    
+    // Using the hook useParams to gather info about how the current url matches the route returned
     let term = useParams();
       
-
-    if(props.results && props.text && term.term === props.text){
+    /* If prop results returns true and the searchText set in state matches the value of the search term found in the url, return a div containing the PhotoList component supplied with props from App and a nav section containing a link to the home page. 
+    
+    Else if the searchText data in App state does not match the term value from useParams, call setSearchText with the term value, call the performSearch function for 24 photos with the term value as search text, and return updated PhotoList component. 
+    
+    Else, if all parameters are not met and results are pending, return h3 Loading tag. */
+    if(props.results && term.term === props.text){
         return( 
         <div>
             <PhotoList data={props.data} title={`Photos of ${props.text}`}  />
             <nav className="main-nav">
-                <Link exact to='/' onClick={() => props.search(3)} >Go Home</Link>
+                <Link exact to='/'>Go Home</Link>
             </nav>
         </div>
         )

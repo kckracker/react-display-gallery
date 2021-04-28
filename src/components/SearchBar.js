@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 
 const SearchBar = (props) => {
 
+    // Storing value to Ref in the variable inputRef for ease of reference to the input value
     const inputRef = React.createRef();
 
+    // Creating useState hook references to reference local input state without a class component.
     const [searchText, setSearchText] = useState("");
     
 

@@ -19,6 +19,14 @@ import NotFound from './components/NotFound';
 
 
 class App extends Component {
+    /* The state of the application is all stored within the App class component.
+        - results is used to determine if photos were returned from the get request
+        - searchText is used to store the current value searched by a user
+        - photos is used to store the photo data gathered from Flickr in response to a search
+        - homePhotos is used to store the initial photos gathered for use on the home page to make ease of navigation and reduce get requests to the Flickr API
+
+        Functions setSearchText and performSearch are bound to this application to enable use with the 'this' keyword.
+    */
     constructor(props){
         super(props);
         this.state = {
@@ -56,32 +64,34 @@ class App extends Component {
     /** Function to generate photos from search or navigation from Flickr API 
      * {number} - accepts number to request limit of photos
      * {text} - accepts string from state searchText
+     * 
+     * The {number} and {text} supplied to the function is inserted in url to fetch photo data from the Flickr API. 
+     * 
+     * If the number supplied is 3, indicating the home page has been requested, the photos are stored in state under the homePhotos array. 
+     * 
+     * Else, the photos are stored in state under the photos array. In both instances the results state is set to true.
      * */ 
     performSearch = (number = 3, text = "fjord%2C+sunset%2C+skyline" ) => {
-        if(text === ""){
-            return
-        } else {
-            this.setState({
-                results:false
-            })
-            axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${text}&safe_search=1&content_type=1&per_page=${number}&format=json&nojsoncallback=1`)
-            .then(data => {
-                if(number === 3){
-                    this.setState({
-                        homePhotos: data.data.photos.photo,
-                        results: true 
-                    })
-                } else {
-                    this.setState({
-                        photos: data.data.photos.photo,
-                        results: true 
-                    })
-                }
-            })
-        }
+        this.setState({
+            results:false
+        })
+        axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${text}&safe_search=1&content_type=1&per_page=${number}&format=json&nojsoncallback=1`)
+        .then(data => {
+            if(number === 3){
+                this.setState({
+                    homePhotos: data.data.photos.photo,
+                    results: true 
+                })
+            } else {
+                this.setState({
+                    photos: data.data.photos.photo,
+                    results: true 
+                })
+            }
+        })
     }
 
-
+    // Calling render method and returning the JSX tags for the app feeding dependency state data to the components via props. SearchBar and NavTerms components will remain constant no matter the route so I have placed them outside the Switch.
     render(){
 
         return(
@@ -108,16 +118,13 @@ class App extends Component {
                     </Route>
                     <Route exact path="/" >
                         <Home 
-                            search={this.performSearch}
                             results={this.state.results}
                             data={this.state.homePhotos}
                             title="React Display Gallery"
                         />
                     </Route>                    
                     <Route>
-                        <NotFound
-                            home={this.performSearch}
-                         />
+                        <NotFound />
                     </Route>
                  </Switch>
                 </div>
