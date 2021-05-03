@@ -14,8 +14,12 @@ const Search = (props) => {
     
     Else if the searchText data in App state does not match the term value from useParams, call setSearchText with the term value, call the performSearch function for 24 photos with the term value as search text, and return updated PhotoList component. 
     
-    Else, if all parameters are not met and results are pending, return h3 Loading tag. */
-    if(props.results && term.term === props.text){
+    Else, if all parameters are not met and results are pending, return h3 Loading tag. */ 
+    if (props.load){
+        return(
+            <h3>Loading...</h3>
+        )
+    } else if(props.results && !props.load && term.term === props.text){
         return( 
         <div>
             <PhotoList data={props.data} title={`Photos of ${props.text}`}  />
@@ -25,7 +29,7 @@ const Search = (props) => {
         </div>
         )
     } else if(term.term !== props.text){
-        props.term(term.term);
+        props.word(term.term);
         props.search(24, term.term);
         return(
             <div>
@@ -35,9 +39,9 @@ const Search = (props) => {
             </nav>
             </div>
         )
-    } else {
+    } else if (!props.results && !props.load){
         return(
-            <h3>Loading...</h3>
+            <h2>Sorry, your search did not return any results. Please try again.</h2>
         )
     }
 

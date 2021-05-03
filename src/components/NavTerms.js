@@ -4,19 +4,19 @@ import {NavLink} from 'react-router-dom';
 
 const NavTerms = (props) => {
 
-    // Function accepts event as a parameter. The setSearchText function is called and passed the value of the text content stored in the target link. Next, the performSearch function is called with 24 for the photo limit and the value of the target link as the search term.
-    const navigateSearch = (e) => {
-        props.term(e.target.textContent);
-        props.search(24, e.target.textContent)
-    }
-
-    // Returning nav section with nexted NavLink tags pointing to './search' path and listening for click event to run the navigateSearch function above.
+    // Returning nav section with nexted NavLink tags pointing to './search' path and listening for click event to run the setSearchText and performSearch functions received as props.
     return(
     <nav className="main-nav">
         <ul>
-            <li><NavLink to={`/search/fjords`} onClick={() => navigateSearch}>fjords</NavLink></li>
-            <li><NavLink to={`/search/sunsets`} onClick={() => navigateSearch}>sunsets</NavLink></li>
-            <li><NavLink to={`/search/skylines`} onClick={() => navigateSearch}>skylines</NavLink></li>
+            <li><NavLink to={`/search/fjords`} onClick={(e) => {
+                props.term(e.target.textContent);
+                props.search(24, e.target.textContent)}}>fjords</NavLink></li>
+            <li><NavLink to={`/search/sunsets`} onClick={(e) => {
+                props.term(e.target.textContent);
+                props.search(24, e.target.textContent)}}>sunsets</NavLink></li>
+            <li><NavLink to={`/search/skylines`} onClick={(e) => {
+                props.term(e.target.textContent);
+                props.search(24, e.target.textContent)}}>skylines</NavLink></li>
         </ul>
     </nav>
     )

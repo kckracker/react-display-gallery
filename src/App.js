@@ -30,7 +30,8 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            results: true,
+            results: false,
+            loading: false,
             searchText: "",
             photos: [],
             homePhotos: []
@@ -73,19 +74,28 @@ class App extends Component {
      * */ 
     performSearch = (number = 3, text = "fjord%2C+sunset%2C+skyline" ) => {
         this.setState({
-            results:false
+            results: false,
+            loading: true
         })
         axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${text}&safe_search=1&content_type=1&per_page=${number}&format=json&nojsoncallback=1`)
         .then(data => {
-            if(number === 3){
+            if(data.data.photos.photo.length === 0){
+                this.setState({
+                    loading: false
+                })
+                return
+            }
+            else if(number === 3){
                 this.setState({
                     homePhotos: data.data.photos.photo,
-                    results: true 
+                    results: true,
+                    loading: false
                 })
             } else {
                 this.setState({
                     photos: data.data.photos.photo,
-                    results: true 
+                    results: true,
+                    loading: false 
                 })
             }
         })
@@ -109,11 +119,12 @@ class App extends Component {
                 <Switch> 
                     <Route path={`/search/:term`} >
                         <Search 
-                                term={this.setSearchText}
+                                word={this.setSearchText}
                                 text={this.state.searchText} 
                                 results={this.state.results}
                                 data={this.state.photos} 
                                 search={this.performSearch}
+                                load={this.state.loading}
                         /> 
                     </Route>
                     <Route exact path="/" >
